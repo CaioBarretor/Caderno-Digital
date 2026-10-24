@@ -14,8 +14,8 @@ import caderno_faculdade as app
 
 def drive_candidates(current):
     home = Path.home()
+    current_path = Path(current)
     candidates = [
-        Path(current),
         home / "Google Drive",
         home / "Meu Drive",
         home / "My Drive",
