@@ -31,6 +31,8 @@ from tkinter import ttk, filedialog, messagebox
 from docx import Document
 from docx.shared import Pt, RGBColor
 
+from ui_render import rounded_rect_photo, switch_photo
+
 APP_NAME = "Caderno Faculdade"
 CONFIG_DIR = Path.home() / ".caderno_faculdade"
 CONFIG_FILE = CONFIG_DIR / "config.json"
@@ -234,8 +236,10 @@ class Surface(tk.Canvas):
         if w < 4 or h < 4:
             return
         self.delete("bg")
-        self.create_polygon(rounded_points(1, 1, w - 1, h - 1, self._radius), smooth=True,
-                            fill=self._app.c(self._fill), outline="", tags="bg")
+        self._bg_image = rounded_rect_photo(
+            self, w, h, self._radius, self._app.c(self._fill)
+        )
+        self.create_image(0, 0, image=self._bg_image, anchor="nw", tags="bg")
         self.tag_lower("bg")
         self.itemconfigure(self._win, width=max(1, w - 2 * self._pad), height=max(1, h - 2 * self._pad))
 
@@ -307,7 +311,8 @@ class Btn(tk.Canvas):
         bg_k, fg_k, hv_k = self.VARIANTS[self._variant]
         self.configure(bg=a.c(self._on))
         fill = a.c(hv_k if self._hover else bg_k)
-        self.create_polygon(rounded_points(1, 1, w - 1, h - 1, self._radius), smooth=True, fill=fill, outline="")
+        self._bg_image = rounded_rect_photo(self, w, h, self._radius, fill)
+        self.create_image(w / 2, h / 2, image=self._bg_image, anchor="center")
         fg = a.c(fg_k)
         x = self._padx
         if self._anchor == "center":
@@ -339,9 +344,8 @@ class Switch(tk.Canvas):
         self.configure(bg=a.c(self._on))
         self.delete("all")
         track = a.c("accent") if self._value else a.c("side_hover")
-        self.create_polygon(rounded_points(1, 2, 41, 22, 10), smooth=True, fill=track, outline="")
-        x = 30 if self._value else 12
-        self.create_oval(x - 8, 4, x + 8, 20, fill="#ffffff", outline="")
+        self._switch_image = switch_photo(self, 42, 24, self._value, track)
+        self.create_image(0, 0, image=self._switch_image, anchor="nw")
 
     def _toggle(self, _e=None):
         self._value = not self._value
@@ -1687,7 +1691,22 @@ class NotebookApp:
         self.root.destroy()
 
 
+def _enable_windows_dpi_awareness():
+    """Evita que o Windows amplie a janela bitmap e deixe textos/contornos borrados."""
+    if os.name != "nt":
+        return
+    try:
+        import ctypes
+        try:
+            ctypes.windll.shcore.SetProcessDpiAwareness(2)
+        except Exception:
+            ctypes.windll.user32.SetProcessDPIAware()
+    except Exception:
+        pass
+
+
 def main():
+    _enable_windows_dpi_awareness()
     root = tk.Tk()
     NotebookApp(root)
     root.mainloop()

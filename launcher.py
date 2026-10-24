@@ -10,6 +10,8 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 
 import caderno_faculdade as app
+from auto_updater import AutoUpdater
+from build_info import BUILD_NUMBER
 
 # Paleta refinada: contraste mais consistente e tons esmeralda menos saturados.
 app.THEMES["light"].update({
@@ -106,9 +108,35 @@ def choose_root(self):
     self.highlight_current()
 
 
-# Substitui apenas o seletor de pasta; todo o restante continua vindo do app original.
+# Substitui o seletor de pasta e adiciona a verificação de atualizações no rodapé.
 app.NotebookApp.choose_root = choose_root
+
+_original_build_sidebar = app.NotebookApp.build_sidebar
+
+
+def build_sidebar(self):
+    _original_build_sidebar(self)
+    bottom = self.sidebar.winfo_children()[-1]
+    app.Btn(
+        bottom, self, "Verificar atualizações",
+        lambda: getattr(self, "updater", None) and self.updater.check_now(manual=True),
+        variant="nav", on="side", size=10, bold=False, height=40,
+        anchor="w", expand=True, icon="↻",
+    ).pack(fill="x", padx=14, pady=2)
+
+
+app.NotebookApp.build_sidebar = build_sidebar
+
+
+def main():
+    # A DPI awareness precisa ser ativada antes de criar a janela Tk.
+    app._enable_windows_dpi_awareness()
+    root = tk.Tk()
+    notebook = app.NotebookApp(root)
+    notebook.updater = AutoUpdater(root, notebook, BUILD_NUMBER)
+    notebook.updater.start()
+    root.mainloop()
 
 
 if __name__ == "__main__":
-    app.main()
+    main()
