@@ -25,9 +25,14 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt pyinstaller
 
+      - name: Set build number
+        shell: pwsh
+        run: |
+          [System.IO.File]::WriteAllText("build_info.py", "BUILD_NUMBER = $env:GITHUB_RUN_NUMBER`n", [System.Text.UTF8Encoding]::new($false))
+
       - name: Build single-file executable
         run: |
-          python -m PyInstaller --noconfirm --clean --onefile --windowed --name "Caderno Faculdade" --collect-all docx launcher.py
+          python -m PyInstaller --noconfirm --clean --onefile --windowed --name "Caderno Faculdade" --collect-all docx --collect-all PIL launcher.py
 
       - name: Prepare ZIP package
         shell: pwsh
