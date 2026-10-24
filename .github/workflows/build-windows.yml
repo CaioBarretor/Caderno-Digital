@@ -1,0 +1,57 @@
+name: Build Windows portable app
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt pyinstaller
+
+      - name: Build single-file executable
+        run: |
+          python -m PyInstaller --noconfirm --clean --onefile --windowed --name "Caderno Faculdade" --collect-all docx launcher.py
+
+      - name: Prepare ZIP package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path package | Out-Null
+          Copy-Item "dist/Caderno Faculdade.exe" "package/"
+          Copy-Item "LEIA-ME.txt" "package/"
+          Compress-Archive -Path "package/*" -DestinationPath "Caderno-Faculdade-Windows.zip" -Force
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Caderno-Faculdade-Windows
+          path: Caderno-Faculdade-Windows.zip
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish downloadable release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: portable-${{ github.run_number }}
+          name: Caderno Faculdade para Windows (build ${{ github.run_number }})
+          body: |
+            Aplicativo portátil para Windows. Baixe Caderno-Faculdade-Windows.zip, extraia e execute Caderno Faculdade.exe.
+            Para sincronizar com o Google Drive, configure o Google Drive para computador e selecione a pasta local sincronizada no aplicativo.
+          files: Caderno-Faculdade-Windows.zip
+          make_latest: true
