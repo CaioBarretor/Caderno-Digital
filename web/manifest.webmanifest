@@ -1,0 +1,1 @@
+{"name":"Caderno Faculdade","short_name":"Caderno","description":"Caderno acadêmico com documentos no Google Drive","start_url":"./","scope":"./","display":"standalone","background_color":"#f3f6f4","theme_color":"#123020","orientation":"any","icons":[{"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
