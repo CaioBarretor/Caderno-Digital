@@ -11,6 +11,28 @@ from tkinter import filedialog, messagebox
 
 import caderno_faculdade as app
 
+# Paleta refinada: contraste mais consistente e tons esmeralda menos saturados.
+app.THEMES["light"].update({
+    "bg": "#F3F6F4", "card": "#FFFFFF", "fg": "#18231D", "muted": "#6F7F75",
+    "line": "#E0E8E2", "field": "#F7F9F7", "accent": "#238A4A",
+    "accent_hover": "#1D773F", "accent_fg": "#FFFFFF", "accent_text": "#1E7A40",
+    "soft": "#E5F3E9", "soft_fg": "#143B22", "dark": "#14231A",
+    "dark_fg": "#FFFFFF", "dark_muted": "#A7B9AC", "dark_hover": "#20372A",
+    "bar": "#D9E7DC", "danger": "#C74646", "warn": "#D99A22", "select": "#D8EBDD",
+    "side": "#101A14", "side2": "#1B2A20", "side_hover": "#26392C",
+    "side_fg": "#EDF5EF", "side_muted": "#91A397", "side_line": "#2C4031",
+})
+app.THEMES["dark"].update({
+    "bg": "#0C1510", "card": "#142019", "fg": "#EAF2EC", "muted": "#91A397",
+    "line": "#26372C", "field": "#101A14", "accent": "#43D477",
+    "accent_hover": "#32C468", "accent_fg": "#07120B", "accent_text": "#5AE48A",
+    "soft": "#1B3524", "soft_fg": "#E7F6EB", "dark": "#08110B",
+    "dark_fg": "#FFFFFF", "dark_muted": "#879B8D", "dark_hover": "#17281D",
+    "bar": "#2A3E31", "danger": "#FF7777", "warn": "#F2BD4A", "select": "#214B30",
+    "side": "#080F0B", "side2": "#142019", "side_hover": "#1B2D21",
+    "side_fg": "#EAF2EC", "side_muted": "#84988B", "side_line": "#24362A",
+})
+
 
 def drive_candidates(current):
     home = Path.home()
