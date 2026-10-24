@@ -3,11 +3,6 @@ name: Build Windows portable app
 on:
   push:
     branches: [main]
-    paths:
-      - "caderno_faculdade.py"
-      - "launcher.py"
-      - "requirements.txt"
-      - ".github/workflows/build-windows.yml"
   workflow_dispatch:
 
 permissions:
