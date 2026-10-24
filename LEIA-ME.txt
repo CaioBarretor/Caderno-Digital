@@ -1,0 +1,22 @@
+CADERNO FACULDADE — VERSÃO PARA WINDOWS
+
+COMO EXECUTAR
+1. Extraia o ZIP inteiro para uma pasta do computador.
+2. Abra "Caderno Faculdade.exe".
+3. Na primeira execução, clique em "Alterar pasta do Drive…" e selecione a pasta onde quer guardar as matérias.
+4. Para sincronizar com o Google Drive, instale e configure o Google Drive para computador e selecione uma pasta dentro de "Meu Drive" ou "My Drive".
+5. Crie suas matérias normalmente. Cada matéria é salva como um arquivo DOCX organizado por período e disciplina.
+
+IMPORTANTE SOBRE O GOOGLE DRIVE
+Esta versão usa a pasta local sincronizada pelo aplicativo oficial Google Drive para computador. Não é necessário criar chave de API nem fornecer senha do Google ao Caderno. A sincronização acontece pelo Drive para computador.
+O aplicativo não faz login direto no site do Google Drive nem usa OAuth/API própria. Se você não tiver o Drive para computador instalado/configurado, o caderno continua funcionando localmente, mas os arquivos não serão enviados automaticamente à nuvem.
+
+RECURSOS
+- Salvamento automático.
+- Arquivo DOCX por matéria.
+- Organização por período e disciplina.
+- Busca e filtros.
+- Tema claro e escuro.
+- Atalhos: Ctrl+S salvar, Ctrl+N nova matéria, Ctrl+K buscar.
+
+Se o Windows mostrar o aviso do SmartScreen, confira se baixou o ZIP deste repositório antes de permitir a execução.
